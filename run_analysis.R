@@ -66,6 +66,7 @@ subFeatNames <- feat_names$V2[grep("mean\\(\\)|std\\(\\)", feat_names$V2)]
 data_names <- c("Subject","Activity", as.character(subFeatNames))
 dataset <- subset(dataset,select = data_names)
 
+## Rename the columns of the large dataset using more descriptive activity names
 names(dataset) <-gsub("^t","time", names(dataset))
 names(dataset) <- gsub("^f","frequency",names(dataset))
 names(dataset) <- gsub("Acc","Accelerometer",names(dataset))
@@ -73,7 +74,9 @@ names(dataset) <- gsub("Gyro","Gyroscope",names(dataset))
 names(dataset) <- gsub("BodyBody","Body",names(dataset))
 names(dataset) <- gsub("Mag","Magnitude",names(dataset))
 
+##Create a second, independent tidy data set with the average of each variable for each activity and each subject
 dataset_2 <- aggregate(.~Subject + Activity, dataset,mean)
 dataset_2 <- dataset_2[order(dataset_2$Subject,dataset_2$Activity),]
 
+# Saving the file
 write.table(dataset_2, file = "tidydata.txt", row.names = FALSE)
